@@ -1,0 +1,38 @@
+name: Build Qt6 Project with CMake on Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+
+
+      - name: Checkout external repo
+        uses: actions/checkout@v3
+        with:
+          repository: LaboratorioGluon/LabPlotter
+          path: .
+
+      - name: Install Qt6
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 6.4.3
+          host: windows
+          target: desktop
+          arch: win64_msvc2019_64
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Configure with CMake
+        working-directory: external-src
+        run: |
+          cmake -B build -S . -DCMAKE_PREFIX_PATH="%Qt6_DIR%"
+
+      - name: Build with CMake
+        working-directory: external-src
+        run: |
+          cmake --build build --config Release
