@@ -45,11 +45,14 @@ jobs:
         run: |
           cmake --build build --config Release
 
-      - name: Deploy with windeployqt
+      - name: Deploy with windeployqt (all exes)
+        shell: pwsh
         run: |
-          $qtBinDir = "${{ env.Qt6_DIR }}\bin" 
-          $exePath = "$(Get-ChildItem -Path build/Release -Filter *.exe | Select-Object -First 1).FullName"
-          & "$qtBinDir\windeployqt.exe" "$exePath" --release
+          $qtBinDir = "${{ env.Qt6_DIR }}\bin"
+          Get-ChildItem -Path build/Release -Filter *.exe | ForEach-Object {
+            & "$qtBinDir\windeployqt.exe" "$($_.FullName)" --release
+          }
+
 
       - name: Upload Deployable Folder
         uses: actions/upload-artifact@v4
