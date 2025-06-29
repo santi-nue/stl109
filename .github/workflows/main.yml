@@ -28,7 +28,7 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - name: Configure with CMake
-        working-directory: external-src
+        working-directory: . 
         run: |
           cmake -B build -S . -DCMAKE_PREFIX_PATH="%Qt6_DIR%"
 
