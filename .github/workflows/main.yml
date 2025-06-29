@@ -44,3 +44,16 @@ jobs:
         working-directory: . 
         run: |
           cmake --build build --config Release
+
+      - name: Deploy with windeployqt
+        run: |
+          $qtBinDir = "${{ env.Qt6_DIR }}\bin" 
+          $exePath = "$(Get-ChildItem -Path build/Release -Filter *.exe | Select-Object -First 1).FullName"
+          & "$qtBinDir\windeployqt.exe" "$exePath" --release
+
+      - name: Upload Deployable Folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt-deploy
+          path: build/Release/
+
