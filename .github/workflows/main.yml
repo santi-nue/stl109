@@ -23,6 +23,8 @@ jobs:
           host: windows
           target: desktop
           arch: win64_msvc2019_64
+          modules: 'qtserialport'    # add more modules as needed, space-separated
+          set-env: 'true'            # ensures CMake can find Qt
 
       - name: Install CMake
         uses: lukka/get-cmake@latest
